@@ -1,0 +1,24 @@
+#!/bin/sh
+# Unmount locked encrypted backup drive.
+
+PATH=/local/bin/drive-manager:/sbin:/usr/sbin:/bin:/usr/bin
+export PATH
+
+if ! [ -e /dev/mapper/backup ] ||
+   ( [ -f /mnt/backup/unmounted ] && [ -f /mnt/backup-tmp/unmounted ] )
+then
+    echo "umount-drive: drive not mounted" >&2
+    exit 1
+fi
+
+if [ ! -f /mnt/backup/unmounted ]
+then
+        sudo umount /mnt/backup
+fi 
+
+if [ ! -f /mnt/backup-tmp/unmounted ]
+then
+        sudo umount /mnt/backup-tmp
+fi
+
+exit 0

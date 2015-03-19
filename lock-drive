@@ -1,0 +1,7 @@
+#!/bin/sh
+# Lock encrypted backup drive.
+
+PATH=/local/bin/drive-manager:/sbin:/usr/sbin:/bin:/usr/bin
+export PATH
+
+sudo cryptsetup remove "/dev/mapper/backup"
