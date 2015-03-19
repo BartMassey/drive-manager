@@ -12,6 +12,6 @@ TOOLS = locate-drive mount-usb umount-usb mount-drive umount-drive \
 install:
 	mkdir -p $(DEST)
 	for TOOL in $(TOOLS); do \
-		cp $$TOOL $(DEST)/ ;\
+		cp $$TOOL.sh $(DEST)/$$TOOL ;\
 		chmod 755 $(DEST)/$$TOOL ;\
 	done
