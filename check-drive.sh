@@ -18,8 +18,7 @@ then
     exit 1
 fi
 
-DEV="`locate-drive backup`" &&
-CDEV=`sudo unlock-drive "$DEV"` &&
+CDEV=`sudo unlock-drive` &&
 if $MODE
 then
     sudo /sbin/fsck.jfs "$@" $CDEV

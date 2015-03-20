@@ -10,18 +10,29 @@ PATH=/local/bin/drive-manager:/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
 MDRIVE=/dev/mapper/backup
-
-if [ $# -ne 1 ]
-then
-    echo "unlock-drive: usage: unlock-drive <dev>" >&2
-    exit 1
-fi
-
 if [ -e $MDRIVE ]
 then
     echo $MDRIVE
     exit 0
 fi
 
-sudo cryptsetup create -c aes -s 128 backup "$1" </dev/tty &&
+case $# in
+    0)
+        RDRIVE="`locate-drive backup`"
+        if [ $? -ne 0 ]
+        then
+            echo "unlock-drive: failed to locate drive" >&2
+            exit 1
+        fi
+        ;;
+    1)
+        RDRIVE="$1"
+        ;;
+    *)
+        echo "unlock-drive: usage: unlock-drive [<dev>]" >&2
+        exit 1
+        ;;
+esac
+
+sudo cryptsetup create -c aes -s 128 backup "$RDRIVE" </dev/tty &&
 echo $MDRIVE

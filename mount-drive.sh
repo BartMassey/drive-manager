@@ -26,6 +26,5 @@ then
     echo "$USAGE" >&2; exit 1
 fi
 
-DRIVE="`locate-drive backup`" &&
-CDIR=`sudo unlock-drive "$DRIVE"` &&
+CDIR=`sudo unlock-drive` &&
 sudo mount -o relatime $CDIR /mnt/$MDIR
