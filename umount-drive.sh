@@ -9,11 +9,29 @@
 PATH=/local/bin/drive-manager:/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
+PGM="`basename $0`"
+USAGE="$PGM: usage: $PGM [-e]"
+
+ENSURE_ONLY=false
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -e) ENSURE_ONLY=true; shift ;;
+        *) echo "$USAGE" >&2; exit 1 ;;
+    esac
+done
+
 if ! [ -e /dev/mapper/backup ] ||
    ( [ -f /mnt/backup/unmounted ] && [ -f /mnt/backup-tmp/unmounted ] )
 then
-    echo "umount-drive: drive not mounted" >&2
-    exit 1
+    if $ENSURE_ONLY
+    then
+        exit 0
+    else
+        echo "umount-drive: drive not mounted" >&2
+        exit 1
+    fi
 fi
 
 if [ ! -f /mnt/backup/unmounted ]

@@ -10,20 +10,29 @@ PATH=/local/bin/drive-manager:/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
 PGM="`basename $0`"
-USAGE="$PGM: usage: $PGM [-t]"
+USAGE="$PGM: usage: $PGM [-t] [-e]"
 
+ENSURE_ONLY=false
 MDIR=backup
-if [ $# -gt 0 ]
-then
+
+while [ $# -gt 0 ]
+do
     case $1 in
     -t) MDIR=backup-tmp ;;
+    -e) ENSURE_ONLY=true ;;
     *)  echo "$USAGE" >&2; exit 1 ;;
     esac
     shift
-fi
-if [ $# -gt 0 ]
+done
+
+if ! [ -f /mnt/$MDIR/unmounted ]
 then
-    echo "$USAGE" >&2; exit 1
+    if $ENSURE_ONLY
+    then
+        exit 0
+    fi
+    echo "$PGM: drive already mounted" >&2
+    exit 1
 fi
 
 CDIR=`sudo unlock-drive` &&
