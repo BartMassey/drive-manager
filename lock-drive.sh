@@ -9,4 +9,16 @@
 PATH=/local/bin/drive-manager:/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
+if ! [ -f /mnt/backup/unmounted ] || ! [ -f /mnt/backup-tmp/unmounted ]
+then
+    echo "refusing to remove probably-unmounted drive" >&2
+    exit 1
+fi
+
+if ! [ -e /dev/mapper/backup ]
+then
+    echo "drive not unlocked" >&2
+    exit 1
+fi
+
 sudo cryptsetup remove "/dev/mapper/backup"
