@@ -18,7 +18,7 @@ fi
 
 CHECK=true
 
-case $# in
+case "$1" in
     -n)
         CHECK=false
         shift
