@@ -15,3 +15,8 @@ install:
 		cp $$TOOL.sh $(DEST)/$$TOOL ;\
 		chmod 755 $(DEST)/$$TOOL ;\
 	done
+
+diff:
+	@for TOOL in $(TOOLS); do \
+		diff -u $$TOOL.sh $(DEST)/$$TOOL ;\
+	done
