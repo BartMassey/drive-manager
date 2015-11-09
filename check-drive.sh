@@ -18,7 +18,7 @@ then
     exit 1
 fi
 
-CDEV=`sudo unlock-drive` &&
+CDEV=`sudo unlock-drive -n` &&
 if $MODE
 then
     sudo /sbin/fsck.jfs "$@" $CDEV
