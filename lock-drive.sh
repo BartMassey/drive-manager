@@ -21,4 +21,4 @@ then
     exit 1
 fi
 
-sudo cryptsetup remove "/dev/mapper/backup"
+sudo cryptsetup close "/dev/mapper/backup"

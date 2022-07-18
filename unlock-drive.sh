@@ -17,16 +17,25 @@ then
 fi
 
 CHECK=true
+DRIVE_CLASS=backup2
+CRYPTSETUP_ARGS=""
+CRYPT_TYPE="luks"
 
 case "$1" in
     -n)
         CHECK=false
         shift
         ;;
+    -o)
+        DRIVE_CLASS=backup
+        CRYPTSETUP_ARGS="-c aes -s 128"
+        CRYPT_TYPE=plain
+        shift
+        ;;
 esac
 case $# in
     0)
-        RDRIVE="`locate-drive backup`"
+        RDRIVE="`locate-drive $DRIVE_CLASS`"
         if [ $? -ne 0 ]
         then
             echo "unlock-drive: failed to locate drive" >&2
@@ -37,12 +46,13 @@ case $# in
         RDRIVE="$1"
         ;;
     *)
-        echo "unlock-drive: usage: unlock-drive [-n] [<dev>]" >&2
+        echo "unlock-drive: usage: unlock-drive [-o] [-n] [<dev>]" >&2
         exit 1
         ;;
 esac
 
-sudo cryptsetup create -c aes -s 128 backup "$RDRIVE" </dev/tty &&
+sudo cryptsetup $CRYPTSETUP_ARGS open \
+  "$RDRIVE" backup --type $CRYPT_TYPE </dev/tty &&
 if $CHECK
 then
     if mount-drive
