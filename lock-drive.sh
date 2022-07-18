@@ -11,7 +11,7 @@ export PATH
 
 if ! [ -f /mnt/backup/unmounted ] || ! [ -f /mnt/backup-tmp/unmounted ]
 then
-    echo "refusing to remove probably-unmounted drive" >&2
+    echo "refusing to remove probably-mounted drive" >&2
     exit 1
 fi
 
